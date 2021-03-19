@@ -7,6 +7,7 @@ import express ,{Request , Response , NextFunction} from "express";
 import routers from "./routers";
 import AppError from "./errors/AppError";
 import uploadConfig from "./configs/upload"
+import cors from "cors";
 
     let expireIn = new Date();
     expireIn.setHours(expireIn.getHours() + 1)
@@ -14,7 +15,7 @@ import uploadConfig from "./configs/upload"
 
 const app = express();
 
-
+app.use(cors())
 app.use(express.json())
 app.use("/files",express.static(uploadConfig.directory))
 app.use(routers);

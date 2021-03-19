@@ -25,13 +25,13 @@ class AuthService
       const user = await repository.findOne({email});
 
       if(!user) {
-        throw new AppError(errors.userOrPasswordIncorrect);   
+        throw new AppError(errors.userOrPasswordIncorrect,401);   
       }
 
       const comparePassword = await compare(password,user.password);
 
       if(!comparePassword) {
-        throw new AppError(errors.userOrPasswordIncorrect);    
+        throw new AppError(errors.userOrPasswordIncorrect,401);    
       }
 
       const {expiresIn,tokenKey} = tokenConfig;

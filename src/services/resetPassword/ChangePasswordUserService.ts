@@ -34,7 +34,6 @@ class ChangePasswordUserService
 
     await resetPasswordRepository.delete({userId:id});
     
-
     return user;
   }
 

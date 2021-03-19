@@ -27,8 +27,10 @@ class UpdateUserService
     if(!name || !lastName || !email || !password || !periodId) {
       throw new AppError(errors.allFieldsRequired);  
     }
+ 
+    
+    const findUser = await repository.find({email});
 
-    const findUser = await repository.find({id});
     const isModifYourelf = findUser.every( user => user.id == id);
 
     if(!isModifYourelf) {
@@ -42,7 +44,6 @@ class UpdateUserService
       email,
       password:hashPassword(password),
       periodId,
-      ruleId:"9a4e7a14-779f-4150-a7d3-8f768232c272",
     });
 
     return user;

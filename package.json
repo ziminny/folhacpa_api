@@ -5,6 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "bull": "^3.20.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -12,14 +14,18 @@
     "multer": "^1.4.2",
     "nodemailer": "^6.5.0",
     "pg": "^8.5.1",
+    "redis": "^3.0.2",
     "typeorm": "^0.2.31"
   },
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules ./src",
+    "dev:queue": "ts-node-dev --transpile-only --ignore-watch node_modules ./src/queue",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/bull": "^3.15.0",
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/multer": "^1.4.5",

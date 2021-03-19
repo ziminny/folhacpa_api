@@ -24,14 +24,18 @@ class ComparePasswardUserService
       const resetPassword = await repository.findOne({userId});
 
       if(!resetPassword) {
+        
         throw new AppError(errors.emailNotFound);
       }
       if(resetPassword.token !== token) {
+        
+        
         throw new AppError(errors.combinationTokenNoMath);
       }
       const timestampsNow = new Date().getTime()
       
         if(timestampsNow > resetPassword.expireIn) {
+          
           throw new AppError(errors.expiredToken,401);
         }
        

@@ -12,9 +12,9 @@ class UserController
   public static async create(request:Request , response:Response):Promise<object>
   {
 
-    const { name , last_name , email , password , period_id  } = request.body;
+    const { name , lastName , email , password , periodId  } = request.body;
     
-    const user = await createUserServices.execute({ name , lastName:last_name , email , password , periodId:period_id  });
+    const user = await createUserServices.execute({ name , lastName , email , password , periodId  });
 
     return response.status(201).json(user);
   }

@@ -4,7 +4,7 @@ import ResetPassword from "../../models/resetPassword";
 import User from "../../models/user";
 import { errors } from "../../utils/messages";
 import crypto from "crypto";
-import mail from "../../libs/mail";
+import Queue from "../../libs/Queue";
 
 interface Request {
   email:string;
@@ -37,7 +37,7 @@ class SendEmailResetPasswordService
       await resetPasswordRepository.delete({userId:user.id})
     }
 
-    let token = crypto.randomBytes(32).toString("hex");
+    let token = String(Math.floor(Math.random() * 655361) + 327681);
     let date = new Date();
     date.setHours(date.getHours() + 1)
     const expireIn = date.getTime();
@@ -46,7 +46,8 @@ class SendEmailResetPasswordService
 
     await resetPasswordRepository.save(createResetPassword); 
 
-    await mail(email,createResetPassword.token);
+    // await mail(email,createResetPassword.token);
+    await Queue.add({token , email , name:user.name});
 
     return createResetPassword;
 
