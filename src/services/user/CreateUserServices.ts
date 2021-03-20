@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import AppError from "../../errors/AppError";
+import { mailQueueAccountCreation } from "../../libs/Queue";
 import User from "../../models/user";
 import hashPassword from "../../utils/hashPassword";
 import { errors } from "../../utils/messages";
@@ -41,7 +42,7 @@ class CreateUserServices
     });
 
     await repository.save(user);
-
+    await mailQueueAccountCreation.add({email,name,lastName})
     return user;
 
   }

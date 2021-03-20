@@ -14,6 +14,6 @@ publicRoutes.post("/auth",UserController.auth);
 
 publicRoutes.post("/send_password",ResetPasswordController.sendEmailResetPassword);
 publicRoutes.post("/compare_token/:id",ResetPasswordController.compareToken);
-publicRoutes.post("/reset_password",ResetPasswordController.changePassword);
+publicRoutes.post("/reset_password/:id",ResetPasswordController.changePassword);
 
 export default publicRoutes;

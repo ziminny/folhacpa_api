@@ -4,7 +4,7 @@ import ResetPassword from "../../models/resetPassword";
 import User from "../../models/user";
 import { errors } from "../../utils/messages";
 import crypto from "crypto";
-import Queue from "../../libs/Queue";
+import {mailQueueResetPassword} from "../../libs/Queue";
 
 interface Request {
   email:string;
@@ -47,7 +47,7 @@ class SendEmailResetPasswordService
     await resetPasswordRepository.save(createResetPassword); 
 
     // await mail(email,createResetPassword.token);
-    await Queue.add({token , email , name:user.name});
+    await mailQueueResetPassword.add({token , email , name:user.name});
 
     return createResetPassword;
 

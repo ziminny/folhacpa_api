@@ -26,12 +26,9 @@ class ResetPasswordController
 
   public static async changePassword(request:Request , response:Response):Promise<object>
   { 
-    const { password } = request.body;
-    const  authorization  = request.headers.authorization
-
-    
-    const id = decryptToken(authorization);
-    const resetPassword = await changePasswordUserService.execute({id, password})
+    const { password, token } = request.body;
+    const  {id} = request.params;
+    const resetPassword = await changePasswordUserService.execute({id, password,token})
     
     return response.json(resetPassword);
   }

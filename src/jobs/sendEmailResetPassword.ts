@@ -14,7 +14,7 @@ export default {
     
     await mailConfig.sendMail({
       from: '"Folha CPA" <ziminny1@gmail.com>', // sender address
-      to: 'testes', // list of receivers
+      to: email, // list of receivers
       subject: "Recuperação de senha", // Subject line
       text: "Você solicitou a recuperação de senha", // plain text body
       html: `Olá <b> ${name} </b> Vocẽ solicitou a alteração da senha </br> 

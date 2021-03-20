@@ -11,6 +11,7 @@ export default
     emailNotFound: "Este email não esta cadastrado !",
     combinationTokenNoMath: "O token não confere !",
     expiredToken: "Esse token já expirou !",
-    passwordNoptFound: "A senha é obrigatória !"
+    passwordNoptFound: "A senha é obrigatória !",
+    violationToken: "Violação de integridade , operação não permitida"
     
 }
