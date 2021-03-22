@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import Color from "./color";
 import Feedback from "./feedback";
 import Question from "./question";
 
@@ -10,6 +11,9 @@ class Category
 
   @Column()
   name:string;
+
+  @Column({name:'color_id'})
+  colorId:string;
 
   @CreateDateColumn({name:"created_at"})
   createdAt:Date;
@@ -23,6 +27,10 @@ class Category
 
   @OneToMany( () => Question , (question:Question) => question.categoryId )
   question:Question[]
+
+  @ManyToOne( () => Color)
+  @JoinColumn({ name:'color_id' , referencedColumnName:'id' })
+  color:Color
 }
 
 export default Category;
