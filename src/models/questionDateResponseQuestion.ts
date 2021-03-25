@@ -9,7 +9,7 @@ class QuestionDateResponseQuestion
   id:string;
 
   @Column()
-  description:string;
+  note:string;
 
   @Column({name:"date_response_id"})
   dateResponseId:string;
