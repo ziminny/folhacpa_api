@@ -1,7 +1,6 @@
 import { getRepository } from "typeorm";
 import Category from "../../models/category";
 import Question from "../../models/question";
-import TypeQuestion from "../../models/typeQuestion";
 
 class ListCategoryService
 {

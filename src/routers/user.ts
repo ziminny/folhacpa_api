@@ -4,6 +4,7 @@ import multer from "multer";
 import uploadConfig from "../configs/upload"
 import userModifyYourself from "../middlewares/userModifyYourself";
 import isAdmin from "../middlewares/isAdmin";
+import ensureAuthentication from "../middlewares/ensureAuthentication";
 
 
 

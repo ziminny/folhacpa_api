@@ -23,9 +23,10 @@ class UpdateUserService
     const repository = getRepository(User);
 
     // comparar o id do token com o id da url , usuário não pode alterar outro id que não seja o seu
-
+      console.log(name,lastName,email,password,periodId);
+      
     if(!name || !lastName || !email || !password || !periodId) {
-      throw new AppError(errors.allFieldsRequired);  
+      throw new AppError('errors.allFieldsRequired');  
     }
  
     

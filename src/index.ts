@@ -17,6 +17,7 @@ const app = express();
 
 app.use(cors())
 app.use(express.json())
+// AVATAR
 app.use("/files",express.static(uploadConfig.directory))
 app.use(routers);
 
@@ -25,7 +26,8 @@ app.use( (error:Error , request:Request,response:Response , next:NextFunction) =
     return response.status(error.code).json({message:error.message})
   }
   console.log(error);
-  
+    console.log(error);
+    
     return response.status(500).json({message:"Erro interno no servidor!"})
 })
 

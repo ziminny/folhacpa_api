@@ -36,8 +36,8 @@ class UserController
   public static async update(request:Request , response:Response):Promise<object>
   { 
     const { id } = request.params;
-    const { name,last_name,email,password,period_id} = request.body;
-    const user = await updateUserService.execute({id, name,lastName:last_name,email,password,periodId:period_id});
+    const { name,lastName,email,password,periodId} = request.body;
+    const user = await updateUserService.execute({id, name,lastName,email,password,periodId});
     return response.json(user);
   }
 
@@ -58,8 +58,10 @@ class UserController
   public static async updateAvatar(request:Request , response:Response):Promise<object>
   { 
     //const { email , password} = request.body;
+    console.log(request.file);
+    
     const user = await updateAvatarUserService.execute({
-      userId:request.user.id,
+      userId:request.user.id,       
       avatarFilename:request.file.filename
     });
     return response.json(user);

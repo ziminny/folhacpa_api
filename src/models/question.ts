@@ -12,6 +12,9 @@ class Question
   @Column()
   description:string;
 
+  @Column()
+  toltip:string;
+
   @Column({name:"category_id"})
   categoryId:string;
 
