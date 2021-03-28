@@ -13,14 +13,17 @@ class CheckResponsesUserService
 
   public async execute({userId,questionId}:Request):Promise<object>
   {
+    
     if(!userId || !questionId) {
       return {message:false}
     }
     const questionDateResponseRepository = getRepository(DateResponseQuestion);
 
     const questionDateResponse = await questionDateResponseRepository.find({userId})
-
+    
     if(!questionDateResponse) {
+      
+      
       return {message:false}
     }
 

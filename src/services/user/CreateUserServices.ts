@@ -37,7 +37,7 @@ class CreateUserServices
       lastName , 
       email , 
       periodId , 
-      ruleId:"8fe485b5-629b-41b2-9c86-ef0fb6d14ce4" , 
+      ruleId:"f6972d5f-8edd-4f65-8a09-131c2adc9798" , 
       password:hashPassword(password)
     });
 

@@ -1,0 +1,14 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var decryptToken_1 = __importDefault(require("../configs/decryptToken"));
+exports.default = (function (request, response, next) {
+    var authorization = request.headers.authorization;
+    var id = decryptToken_1.default(authorization);
+    request.user = {
+        id: id
+    };
+    return next();
+});

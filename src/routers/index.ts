@@ -12,11 +12,11 @@ const routers = Router();
 routers.use("/users",publicRoutes);
 routers.use("/users",ensureAuthentication,userRouter)
 
-routers.use("/period",ensureAuthentication,periodRouter);
+routers.use("/period",periodRouter);
 
-routers.use("/category",ensureAuthentication,categoryRouter);
+routers.use("/category",categoryRouter);
 
-routers.use("/questions",ensureAuthentication,questionRouter);
+routers.use("/questions",questionRouter);
 
 
 export default routers;

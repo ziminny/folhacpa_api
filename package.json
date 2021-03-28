@@ -19,8 +19,8 @@
     "typeorm": "^0.2.31"
   },
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules ./src",
-    "dev:queue": "ts-node-dev --transpile-only --ignore-watch node_modules ./src/queue",
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules ./dist",
+    "dev:queue": "ts-node-dev --transpile-only --ignore-watch node_modules ./dist/queue",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {

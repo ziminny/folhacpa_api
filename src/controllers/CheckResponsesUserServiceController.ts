@@ -7,8 +7,9 @@ class CheckResponsesUserServiceController
 
   public static async check(request:Request,response:Response)
   {
+    
     const {questionId,userId} = request.body
-
+    
     const res = await checkResponsesUserService.execute({questionId,userId});
     return response.json(res)
   }
