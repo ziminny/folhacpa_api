@@ -71,14 +71,13 @@ var CreateUserServices = /** @class */ (function () {
                             lastName: lastName,
                             email: email,
                             periodId: periodId,
-                            ruleId: "f6972d5f-8edd-4f65-8a09-131c2adc9798",
+                            ruleId: "6b22728c-385a-46dc-969b-919bdc9c5c55",
                             password: hashPassword_1.default(password)
                         });
-                        return [4 /*yield*/, repository.save(user)];
-                    case 2:
-                        _b.sent();
+                        // await repository.save(user);
                         return [4 /*yield*/, Queue_1.mailQueueAccountCreation.add({ email: email, name: name, lastName: lastName })];
-                    case 3:
+                    case 2:
+                        // await repository.save(user);
                         _b.sent();
                         return [2 /*return*/, user];
                 }

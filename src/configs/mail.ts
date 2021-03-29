@@ -1,7 +1,10 @@
 import nodemailer from "nodemailer";
 
 export default nodemailer.createTransport({
-  service:process.env.EMAIL_SERVICE,
+  // service:process.env.EMAIL_SERVICE,
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.USER_EMAIL_LOGIN, 
     pass: process.env.USER_EMAIL_PASSWORD     
