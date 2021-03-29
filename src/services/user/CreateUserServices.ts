@@ -41,7 +41,7 @@ class CreateUserServices
       password:hashPassword(password)
     });
 
-   // await repository.save(user);
+    await repository.save(user);
     await mailQueueAccountCreation.add({email,name,lastName})
     return user;
 
