@@ -45,18 +45,26 @@ exports.default = {
     handle: function (_a) {
         var _b = _a.data, email = _b.email, lastName = _b.lastName, name = _b.name;
         return __awaiter(this, void 0, void 0, function () {
+            var error_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, mail_1.default.sendMail({
-                            from: '"Folha CPA" <ziminny1@gmail.com>',
-                            to: email,
-                            subject: "Bem vindo a Folha CPA",
-                            text: "Ol\u00E1 " + name + " " + lastName,
-                            html: "Ol\u00E1 <b> " + name + " " + lastName + "</b> </br></br> Bem vindo , ficamos feliz \n      em ter voc\u00EA por aqui"
-                        })];
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, mail_1.default.sendMail({
+                                from: '"Folha CPA" <ziminny1@gmail.com>',
+                                to: email,
+                                subject: "Bem vindo a Folha CPA",
+                                text: "Ol\u00E1 " + name + " " + lastName,
+                                html: "Ol\u00E1 <b> " + name + " " + lastName + "</b> </br></br> Bem vindo , ficamos feliz \n        em ter voc\u00EA por aqui"
+                            })];
                     case 1:
                         _c.sent();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _c.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
