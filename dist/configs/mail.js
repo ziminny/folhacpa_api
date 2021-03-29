@@ -4,16 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailer_1 = __importDefault(require("nodemailer"));
-exports.default = nodemailer_1.default.createTransport({
-    // service:process.env.EMAIL_SERVICE,
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+var nodemailer_smtp_transport_1 = __importDefault(require("nodemailer-smtp-transport"));
+exports.default = nodemailer_1.default.createTransport(nodemailer_smtp_transport_1.default({
+    service: process.env.EMAIL_SERVICE,
     auth: {
         user: process.env.USER_EMAIL_LOGIN,
         pass: process.env.USER_EMAIL_PASSWORD
     }
-});
+}));
 // export default nodemailer.createTransport({
 //   host: "smtp.mailtrap.io",
 //   port: 2525,
