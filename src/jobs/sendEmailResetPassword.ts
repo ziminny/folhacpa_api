@@ -12,6 +12,7 @@ export default {
   key: 'ResetPassword',
   async handle({  data:{email , token, name} }:Handle ) {
     
+   try {
     await mailConfig.sendMail({
       from: '"Folha CPA" <ziminny1@gmail.com>', // sender address
       to: email, // list of receivers
@@ -22,6 +23,10 @@ export default {
               O token tem validade de 1 hora
             `, // html body
     });
+   } catch (error) {
+      console.log(error);
+      
+   }
   
   }
 }

@@ -45,18 +45,26 @@ exports.default = {
     handle: function (_a) {
         var _b = _a.data, email = _b.email, token = _b.token, name = _b.name;
         return __awaiter(this, void 0, void 0, function () {
+            var error_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, mail_1.default.sendMail({
-                            from: '"Folha CPA" <ziminny1@gmail.com>',
-                            to: email,
-                            subject: "Recuperação de senha",
-                            text: "Você solicitou a recuperação de senha",
-                            html: "Ol\u00E1 <b> " + name + " </b> Voc\u1EBD solicitou a altera\u00E7\u00E3o da senha </br> \n            use o c\u00F3digo para redefinir sua senha </br></br> <b>" + token + "</b> </br></br>\n              O token tem validade de 1 hora\n            ", // html body
-                        })];
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, mail_1.default.sendMail({
+                                from: '"Folha CPA" <ziminny1@gmail.com>',
+                                to: email,
+                                subject: "Recuperação de senha",
+                                text: "Você solicitou a recuperação de senha",
+                                html: "Ol\u00E1 <b> " + name + " </b> Voc\u1EBD solicitou a altera\u00E7\u00E3o da senha </br> \n            use o c\u00F3digo para redefinir sua senha </br></br> <b>" + token + "</b> </br></br>\n              O token tem validade de 1 hora\n            ", // html body
+                            })];
                     case 1:
                         _c.sent();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _c.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
