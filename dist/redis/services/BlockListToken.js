@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,51 +54,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = void 0;
-var typeorm_1 = require("typeorm");
-var user_1 = __importDefault(require("../../models/user"));
-var bcrypt_1 = require("bcrypt");
-var jsonwebtoken_1 = require("jsonwebtoken");
-var AppError_1 = __importDefault(require("../../errors/AppError"));
-var messages_1 = require("../../utils/messages");
+exports.blockListToken = void 0;
+var AbstractRedis_1 = __importDefault(require("./AbstractRedis"));
 var token_1 = __importDefault(require("../../configs/token"));
-var RefreshToken_1 = require("../../redis/services/RefreshToken");
-var AuthService = /** @class */ (function () {
-    function AuthService() {
+var jsonwebtoken_1 = require("jsonwebtoken");
+var moment_1 = __importDefault(require("moment"));
+var BlockListToken = /** @class */ (function (_super) {
+    __extends(BlockListToken, _super);
+    function BlockListToken() {
+        return _super.call(this, "blocklist:") || this;
     }
-    AuthService.prototype.execute = function (_a) {
-        var email = _a.email, password = _a.password;
+    BlockListToken.prototype.addToBlockList = function (refreshToken, accessToken) {
         return __awaiter(this, void 0, void 0, function () {
-            var refreshToken, repository, user, comparePassword, expiresIn, tokenKey, token;
+            var _a, token, tokenKey, decripty, exp, error_1, expireIn;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, RefreshToken_1.refreshToken.addRefreshToken()];
+                    case 0: return [4 /*yield*/, _super.prototype.set.call(this, refreshToken, "")];
                     case 1:
                         _b.sent();
-                        refreshToken = RefreshToken_1.refreshToken.getRefreshToken();
-                        repository = typeorm_1.getRepository(user_1.default);
-                        return [4 /*yield*/, repository.findOne({ email: email })];
+                        _b.label = 2;
                     case 2:
-                        user = _b.sent();
-                        if (!user) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
-                        }
-                        return [4 /*yield*/, bcrypt_1.compare(password, user.password)];
+                        _b.trys.push([2, 4, , 6]);
+                        _a = accessToken.split(" "), token = _a[1];
+                        tokenKey = token_1.default.tokenKey;
+                        decripty = jsonwebtoken_1.verify(token, tokenKey);
+                        exp = decripty.exp;
+                        return [4 /*yield*/, _super.prototype.expireat.call(this, refreshToken, exp)];
                     case 3:
-                        comparePassword = _b.sent();
-                        if (!comparePassword) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
-                        }
-                        expiresIn = token_1.default.expiresIn, tokenKey = token_1.default.tokenKey;
-                        token = jsonwebtoken_1.sign({}, tokenKey, {
-                            subject: user.id,
-                            expiresIn: expiresIn
-                        });
-                        return [2 /*return*/, { token: token, user: user, refreshToken: refreshToken }];
+                        _b.sent();
+                        return [3 /*break*/, 6];
+                    case 4:
+                        error_1 = _b.sent();
+                        expireIn = moment_1.default().add(1, "h").unix();
+                        return [4 /*yield*/, _super.prototype.expireat.call(this, refreshToken, expireIn)];
+                    case 5:
+                        _b.sent();
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
-    return AuthService;
-}());
-exports.authService = new AuthService;
+    BlockListToken.prototype.existsToken = function (refreshToken) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, _super.prototype.exists.call(this, refreshToken)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return BlockListToken;
+}(AbstractRedis_1.default));
+exports.blockListToken = new BlockListToken;

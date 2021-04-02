@@ -9,6 +9,8 @@ var UserController_1 = __importDefault(require("../controllers/UserController"))
 var publicRoutes = express_1.Router();
 publicRoutes.post("/", UserController_1.default.create);
 publicRoutes.post("/auth", UserController_1.default.auth);
+publicRoutes.post("/refresh-token", UserController_1.default.refreshToken);
+publicRoutes.post("/logout", UserController_1.default.logout);
 publicRoutes.post("/send_password", ResetPasswordController_1.default.sendEmailResetPassword);
 publicRoutes.post("/compare_token/:id", ResetPasswordController_1.default.compareToken);
 publicRoutes.post("/reset_password/:id", ResetPasswordController_1.default.changePassword);

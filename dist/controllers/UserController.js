@@ -41,6 +41,8 @@ var CreateUserServices_1 = require("../services/user/CreateUserServices");
 var DeleteUserService_1 = require("../services/user/DeleteUserService");
 var ListOneUserService_1 = require("../services/user/ListOneUserService");
 var ListUserService_1 = require("../services/user/ListUserService");
+var LogoutUserService_1 = require("../services/user/LogoutUserService");
+var RefreshTokenService_1 = require("../services/user/RefreshTokenService");
 var UpdateAvatarUserService_1 = require("../services/user/UpdateAvatarUserService");
 var UpdateUserService_1 = require("../services/user/UpdateUserService");
 var UserController = /** @class */ (function () {
@@ -122,15 +124,30 @@ var UserController = /** @class */ (function () {
     };
     UserController.auth = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, password, _b, user, token;
+            var _a, email, password, _b, user, token, refreshToken;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         _a = request.body, email = _a.email, password = _a.password;
                         return [4 /*yield*/, AuthService_1.authService.execute({ email: email, password: password })];
                     case 1:
-                        _b = _c.sent(), user = _b.user, token = _b.token;
-                        return [2 /*return*/, response.json({ user: user, token: token })];
+                        _b = _c.sent(), user = _b.user, token = _b.token, refreshToken = _b.refreshToken;
+                        return [2 /*return*/, response.json({ user: user, token: token, refreshToken: refreshToken })];
+                }
+            });
+        });
+    };
+    UserController.refreshToken = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, tok, id, _b, refreshToken, token;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = request.body, tok = _a.refreshToken, id = _a.id;
+                        return [4 /*yield*/, RefreshTokenService_1.refreshTokenService.execute({ id: id, refreshToken: tok })];
+                    case 1:
+                        _b = _c.sent(), refreshToken = _b.refreshToken, token = _b.token;
+                        return [2 /*return*/, response.json({ token: token, refreshToken: refreshToken })];
                 }
             });
         });
@@ -140,16 +157,37 @@ var UserController = /** @class */ (function () {
             var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        //const { email , password} = request.body;
-                        console.log(request.file);
-                        return [4 /*yield*/, UpdateAvatarUserService_1.updateAvatarUserService.execute({
-                                userId: request.user.id,
-                                avatarFilename: request.file.filename
-                            })];
+                    case 0: return [4 /*yield*/, UpdateAvatarUserService_1.updateAvatarUserService.execute({
+                            userId: request.user.id,
+                            avatarFilename: request.file.filename
+                        })];
                     case 1:
                         user = _a.sent();
                         return [2 /*return*/, response.json(user)];
+                }
+            });
+        });
+    };
+    UserController.logout = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var refreshToken, accessToken, user, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        refreshToken = request.body.refreshToken;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        accessToken = request.headers.authorization;
+                        return [4 /*yield*/, LogoutUserService_1.logoutUserService.execute(refreshToken, accessToken)];
+                    case 2:
+                        user = _a.sent();
+                        return [2 /*return*/, response.json(user)];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        return [2 /*return*/, response.json({})];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

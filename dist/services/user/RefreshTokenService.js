@@ -39,51 +39,66 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = void 0;
-var typeorm_1 = require("typeorm");
-var user_1 = __importDefault(require("../../models/user"));
-var bcrypt_1 = require("bcrypt");
+exports.refreshTokenService = void 0;
 var jsonwebtoken_1 = require("jsonwebtoken");
+var typeorm_1 = require("typeorm");
 var AppError_1 = __importDefault(require("../../errors/AppError"));
-var messages_1 = require("../../utils/messages");
+var user_1 = __importDefault(require("../../models/user"));
 var token_1 = __importDefault(require("../../configs/token"));
 var RefreshToken_1 = require("../../redis/services/RefreshToken");
-var AuthService = /** @class */ (function () {
-    function AuthService() {
+var BlockListToken_1 = require("../../redis/services/BlockListToken");
+var RefreshTokenService = /** @class */ (function () {
+    function RefreshTokenService() {
     }
-    AuthService.prototype.execute = function (_a) {
-        var email = _a.email, password = _a.password;
+    RefreshTokenService.prototype.execute = function (_a) {
+        var refreshToken = _a.refreshToken, id = _a.id;
         return __awaiter(this, void 0, void 0, function () {
-            var refreshToken, repository, user, comparePassword, expiresIn, tokenKey, token;
+            var exists, blockList, newRefreshToken, userRepository, user, expiresIn, tokenKey, token;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, RefreshToken_1.refreshToken.addRefreshToken()];
+                    case 0: return [4 /*yield*/, RefreshToken_1.refreshToken.existsToken(refreshToken)];
                     case 1:
-                        _b.sent();
-                        refreshToken = RefreshToken_1.refreshToken.getRefreshToken();
-                        repository = typeorm_1.getRepository(user_1.default);
-                        return [4 /*yield*/, repository.findOne({ email: email })];
+                        exists = _b.sent();
+                        console.log(refreshToken);
+                        if (!exists) {
+                            throw new AppError_1.default("Refresh token invalido!");
+                        }
+                        if (!id) {
+                            throw new AppError_1.default("O id é obrigatório !");
+                        }
+                        return [4 /*yield*/, BlockListToken_1.blockListToken.existsToken(refreshToken)];
                     case 2:
+                        blockList = _b.sent();
+                        if (blockList) {
+                            throw new AppError_1.default("Este refresh token não esta mais acessivel");
+                        }
+                        return [4 /*yield*/, RefreshToken_1.refreshToken.removeToken(refreshToken)];
+                    case 3:
+                        _b.sent();
+                        return [4 /*yield*/, RefreshToken_1.refreshToken.addRefreshToken()];
+                    case 4:
+                        _b.sent();
+                        newRefreshToken = RefreshToken_1.refreshToken.getRefreshToken();
+                        userRepository = typeorm_1.getRepository(user_1.default);
+                        return [4 /*yield*/, userRepository.findOne({ id: id })];
+                    case 5:
                         user = _b.sent();
                         if (!user) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
-                        }
-                        return [4 /*yield*/, bcrypt_1.compare(password, user.password)];
-                    case 3:
-                        comparePassword = _b.sent();
-                        if (!comparePassword) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
+                            throw new AppError_1.default("Usuário não encontrado");
                         }
                         expiresIn = token_1.default.expiresIn, tokenKey = token_1.default.tokenKey;
                         token = jsonwebtoken_1.sign({}, tokenKey, {
                             subject: user.id,
                             expiresIn: expiresIn
                         });
-                        return [2 /*return*/, { token: token, user: user, refreshToken: refreshToken }];
+                        return [2 /*return*/, {
+                                refreshToken: newRefreshToken,
+                                token: token
+                            }];
                 }
             });
         });
     };
-    return AuthService;
+    return RefreshTokenService;
 }());
-exports.authService = new AuthService;
+exports.refreshTokenService = new RefreshTokenService;

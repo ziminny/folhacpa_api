@@ -5,6 +5,7 @@ import { sign } from "jsonwebtoken";
 import AppError from "../../errors/AppError";
 import { errors } from "../../utils/messages";
 import tokenConfig from "../../configs/token";
+import { refreshToken as RefreshToken } from "../../redis/services/RefreshToken";
 
 interface Request {
   email:string;
@@ -14,14 +15,19 @@ interface Request {
 interface TokenAndUser {
   user:User,
   token:string;
+  refreshToken:string;
 }
 class AuthService
 {
 
   public async execute({email,password}:Request) :Promise<TokenAndUser>
   {
-      const repository = getRepository(User);
+      await RefreshToken.addRefreshToken()
 
+      const refreshToken = RefreshToken.getRefreshToken();
+    
+      const repository = getRepository(User);
+     
       const user = await repository.findOne({email});
 
       if(!user) {
@@ -41,7 +47,7 @@ class AuthService
         expiresIn
       })
 
-      return { token , user }
+      return { token , user, refreshToken }
 
 
   }
