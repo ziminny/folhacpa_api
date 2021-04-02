@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,47 +54,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listCategoryService = void 0;
-var typeorm_1 = require("typeorm");
-var category_1 = __importDefault(require("../../models/category"));
-var question_1 = __importDefault(require("../../models/question"));
-var ListCaregoriesRedis_1 = require("../../redis/services/ListCaregoriesRedis");
-var ListCategoryService = /** @class */ (function () {
-    function ListCategoryService() {
+exports.listCaregoriesRedis = void 0;
+var moment_1 = __importDefault(require("moment"));
+var AbstractRedis_1 = __importDefault(require("./AbstractRedis"));
+var ListCaregoriesRedis = /** @class */ (function (_super) {
+    __extends(ListCaregoriesRedis, _super);
+    function ListCaregoriesRedis() {
+        var _this = _super.call(this, "ListCategories:") || this;
+        _this.value = "categories";
+        return _this;
     }
-    ListCategoryService.prototype.execute = function () {
+    ListCaregoriesRedis.prototype.addCategories = function (categories) {
         return __awaiter(this, void 0, void 0, function () {
-            var repository, categoriesRedis, categories, parseCategories;
+            var expireIn;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        repository = typeorm_1.getRepository(category_1.default);
-                        return [4 /*yield*/, ListCaregoriesRedis_1.listCaregoriesRedis.getCategories()];
+                        expireIn = moment_1.default().add(1, "d").unix();
+                        return [4 /*yield*/, _super.prototype.set.call(this, this.value, JSON.stringify(categories))];
                     case 1:
-                        categoriesRedis = _a.sent();
-                        console.time("AKI");
-                        if (!!categoriesRedis) return [3 /*break*/, 4];
-                        return [4 /*yield*/, repository
-                                .createQueryBuilder("cat")
-                                .leftJoinAndSelect("cat.color", "color_id")
-                                .leftJoinAndMapMany("cat.question", question_1.default, "question", "question.category_id = cat.id")
-                                .leftJoinAndSelect('question.typeQuestion', 'type_question_id')
-                                .getMany()];
-                    case 2:
-                        categories = _a.sent();
-                        console.timeEnd("AKI");
-                        return [4 /*yield*/, ListCaregoriesRedis_1.listCaregoriesRedis.addCategories(categories)];
-                    case 3:
                         _a.sent();
-                        return [2 /*return*/, categories];
-                    case 4:
-                        parseCategories = JSON.parse(categoriesRedis);
-                        console.timeEnd("AKI");
-                        return [2 /*return*/, parseCategories];
+                        return [4 /*yield*/, _super.prototype.expireat.call(this, this.value, expireIn)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return ListCategoryService;
-}());
-exports.listCategoryService = new ListCategoryService;
+    ListCaregoriesRedis.prototype.getCategories = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, _super.prototype.get.call(this, this.value)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return ListCaregoriesRedis;
+}(AbstractRedis_1.default));
+exports.listCaregoriesRedis = new ListCaregoriesRedis;
