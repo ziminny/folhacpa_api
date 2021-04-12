@@ -11,6 +11,7 @@ const publicRoutes = Router();
 
 publicRoutes.post("/" , UserController.create);
 publicRoutes.post("/auth",UserController.auth);
+publicRoutes.post("/auth-admin",UserController.authAdmin);
 publicRoutes.post("/refresh-token",UserController.refreshToken);
 publicRoutes.post("/logout",UserController.logout);
 

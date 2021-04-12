@@ -1,5 +1,6 @@
 import {Request , Response} from "express";
 import { authService } from "../services/user/AuthService";
+import { authServiceAdmin } from "../services/user/AuthServiceAdmin";
 import { createUserServices } from "../services/user/CreateUserServices";
 import { deleteUserService } from "../services/user/DeleteUserService";
 import { listOneUserService } from "../services/user/ListOneUserService";
@@ -54,6 +55,13 @@ class UserController
   { 
     const { email , password} = request.body;
     const { user , token , refreshToken } = await authService.execute({email,password});
+    return response.json({ user , token,refreshToken});
+  }
+
+  public static async authAdmin(request:Request , response:Response):Promise<object>
+  { 
+    const { email , password} = request.body;
+    const { user , token , refreshToken } = await authServiceAdmin.execute({email,password});
     return response.json({ user , token,refreshToken});
   }
 

@@ -66,13 +66,13 @@ var AuthService = /** @class */ (function () {
                     case 2:
                         user = _b.sent();
                         if (!user) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
+                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 402);
                         }
                         return [4 /*yield*/, bcrypt_1.compare(password, user.password)];
                     case 3:
                         comparePassword = _b.sent();
                         if (!comparePassword) {
-                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 401);
+                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 402);
                         }
                         expiresIn = token_1.default.expiresIn, tokenKey = token_1.default.tokenKey;
                         token = jsonwebtoken_1.sign({}, tokenKey, {

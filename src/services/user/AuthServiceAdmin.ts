@@ -17,7 +17,7 @@ interface TokenAndUser {
   token:string;
   refreshToken:string;
 }
-class AuthService
+class AuthServiceAdmin
 {
 
   public async execute({email,password}:Request) :Promise<TokenAndUser>
@@ -33,6 +33,16 @@ class AuthService
       if(!user) {
         throw new AppError(errors.userOrPasswordIncorrect,402);   
       }
+
+      const relation = await repository.createQueryBuilder("user")
+                      .leftJoinAndSelect("user.rule","rule_id")
+                      .where("user.email = :email",{email})
+                      .getOne();
+      console.log(relation);
+      
+      if(relation?.rule.name != 'admin') {
+        throw new AppError(errors.userOrPasswordIncorrect,402);   
+      }                
 
       const comparePassword = await compare(password,user.password);
 
@@ -54,4 +64,4 @@ class AuthService
 
 }
 
-export const authService = new AuthService;
+export const authServiceAdmin = new AuthServiceAdmin;

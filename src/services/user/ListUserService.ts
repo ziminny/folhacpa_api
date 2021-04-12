@@ -5,8 +5,13 @@ class ListUserService
 {
   public async execute():Promise<User[]>
   {
-    const repository = getRepository(User); 
-    return await repository.find();
+
+    const repository = await getRepository(User)
+        .createQueryBuilder("user")                   
+        .leftJoinAndSelect("user.rule","rule_id")
+        .leftJoinAndSelect("user.period","period_id")
+        .getMany(); 
+    return repository;
   }
 }
 

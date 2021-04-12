@@ -85,7 +85,7 @@ var BlockListToken = /** @class */ (function (_super) {
                         return [3 /*break*/, 6];
                     case 4:
                         error_1 = _b.sent();
-                        expireIn = moment_1.default().add(1, "h").unix();
+                        expireIn = moment_1.default().add(7, "d").unix();
                         return [4 /*yield*/, _super.prototype.expireat.call(this, refreshToken, expireIn)];
                     case 5:
                         _b.sent();

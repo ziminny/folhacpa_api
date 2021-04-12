@@ -24,9 +24,21 @@ class UpdateUserService
 
     // comparar o id do token com o id da url , usuário não pode alterar outro id que não seja o seu
       console.log(name,lastName,email,password,periodId);
+
+      const relation = await repository.createQueryBuilder("user")
+      .leftJoinAndSelect("user.rule","rule_id")
+      .where("user.email = :email",{email})
+      .getOne();
       
-    if(!name || !lastName || !email || !password || !periodId) {
-      throw new AppError('errors.allFieldsRequired');  
+
+
+      
+    if(!name || !lastName || !email || !password) {
+      throw new AppError(errors.allFieldsRequired);  
+    }
+
+    if(relation?.rule.name == 'user') {
+      if(!periodId)  throw new AppError(errors.allFieldsRequired);  
     }
  
     

@@ -27,7 +27,7 @@ class BlockListToken extends AbstractRedis
       const { exp } = decripty as Token;
       await super.expireat(refreshToken,exp);
     } catch (error) {
-      const expireIn = moment().add(1,"h").unix();
+      const expireIn = moment().add(7,"d").unix();
       await super.expireat(refreshToken,expireIn);
     }
   }
