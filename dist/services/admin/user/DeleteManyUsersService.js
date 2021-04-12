@@ -35,40 +35,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var ListCategoryService_1 = require("../services/category/ListCategoryService");
-var ListOneCategoryService_1 = require("../services/category/ListOneCategoryService");
-var CategoryController = /** @class */ (function () {
-    function CategoryController() {
+exports.deleteManyUsersService = void 0;
+var typeorm_1 = require("typeorm");
+var AppError_1 = __importDefault(require("../../../errors/AppError"));
+var user_1 = __importDefault(require("../../../models/user"));
+var DeleteManyUsersService = /** @class */ (function () {
+    function DeleteManyUsersService() {
     }
-    CategoryController.list = function (request, response) {
+    DeleteManyUsersService.prototype.execute = function (ids) {
         return __awaiter(this, void 0, void 0, function () {
-            var categories;
+            var respository;
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, ListCategoryService_1.listCategoryService.execute()];
-                    case 1:
-                        categories = _a.sent();
-                        return [2 /*return*/, response.json(categories)];
+                respository = typeorm_1.getRepository(user_1.default);
+                try {
+                    ids.forEach(function (id) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, respository.delete({ id: id })];
+                                case 1: return [2 /*return*/, _a.sent()];
+                            }
+                        });
+                    }); });
                 }
+                catch (error) {
+                    throw new AppError_1.default("Algum erro aconteceu ao tentar deletar os usuários");
+                }
+                return [2 /*return*/];
             });
         });
     };
-    CategoryController.listOne = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, category;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        id = request.params.id;
-                        return [4 /*yield*/, ListOneCategoryService_1.listOneCategoryService.execute(id)];
-                    case 1:
-                        category = _a.sent();
-                        return [2 /*return*/, response.json(category)];
-                }
-            });
-        });
-    };
-    return CategoryController;
+    return DeleteManyUsersService;
 }());
-exports.default = CategoryController;
+exports.deleteManyUsersService = new DeleteManyUsersService;

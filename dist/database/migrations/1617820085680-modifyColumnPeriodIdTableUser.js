@@ -36,39 +36,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ListCategoryService_1 = require("../services/category/ListCategoryService");
-var ListOneCategoryService_1 = require("../services/category/ListOneCategoryService");
-var CategoryController = /** @class */ (function () {
-    function CategoryController() {
+exports.modifyColumnPeriodIdTableUser1617820085680 = void 0;
+var typeorm_1 = require("typeorm");
+var modifyColumnPeriodIdTableUser1617820085680 = /** @class */ (function () {
+    function modifyColumnPeriodIdTableUser1617820085680() {
     }
-    CategoryController.list = function (request, response) {
+    modifyColumnPeriodIdTableUser1617820085680.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
-            var categories;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ListCategoryService_1.listCategoryService.execute()];
+                    case 0: return [4 /*yield*/, queryRunner.changeColumn('user', 'period_id', new typeorm_1.TableColumn({
+                            name: 'period_id',
+                            type: 'uuid',
+                            isNullable: true
+                        }))];
                     case 1:
-                        categories = _a.sent();
-                        return [2 /*return*/, response.json(categories)];
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    CategoryController.listOne = function (request, response) {
+    modifyColumnPeriodIdTableUser1617820085680.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, category;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        id = request.params.id;
-                        return [4 /*yield*/, ListOneCategoryService_1.listOneCategoryService.execute(id)];
+                    case 0: return [4 /*yield*/, queryRunner.changeColumn("user", "period_id", new typeorm_1.TableColumn({
+                            name: 'period_id',
+                            type: 'uuid',
+                        }))];
                     case 1:
-                        category = _a.sent();
-                        return [2 /*return*/, response.json(category)];
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CategoryController;
+    return modifyColumnPeriodIdTableUser1617820085680;
 }());
-exports.default = CategoryController;
+exports.modifyColumnPeriodIdTableUser1617820085680 = modifyColumnPeriodIdTableUser1617820085680;

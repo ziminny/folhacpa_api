@@ -9,11 +9,16 @@ var multer_1 = __importDefault(require("multer"));
 var upload_1 = __importDefault(require("../configs/upload"));
 var userModifyYourself_1 = __importDefault(require("../middlewares/userModifyYourself"));
 var isAdmin_1 = __importDefault(require("../middlewares/isAdmin"));
+var ensureAuthentication_1 = __importDefault(require("../middlewares/ensureAuthentication"));
+var UserControllerAdmin_1 = __importDefault(require("../controllers/admin/UserControllerAdmin"));
 var userRouter = express_1.Router();
 var upload = multer_1.default(upload_1.default);
-userRouter.get("/", isAdmin_1.default, UserController_1.default.list);
+userRouter.get("/", isAdmin_1.default, ensureAuthentication_1.default, UserController_1.default.list);
 userRouter.get("/:id", userModifyYourself_1.default, UserController_1.default.listOne);
 userRouter.put("/:id", userModifyYourself_1.default, UserController_1.default.update);
 userRouter.delete("/:id", userModifyYourself_1.default, UserController_1.default.delete);
 userRouter.patch("/avatar", upload.single('avatar'), UserController_1.default.updateAvatar);
+// Admin
+userRouter.post("/delete-users", isAdmin_1.default, ensureAuthentication_1.default, UserControllerAdmin_1.default.deleteManyUsers);
+userRouter.post("/create-user", isAdmin_1.default, ensureAuthentication_1.default, UserControllerAdmin_1.default.createAdmin);
 exports.default = userRouter;

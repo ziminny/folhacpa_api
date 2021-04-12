@@ -39,29 +39,61 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listUserService = void 0;
+exports.authServiceAdmin = void 0;
 var typeorm_1 = require("typeorm");
 var user_1 = __importDefault(require("../../models/user"));
-var ListUserService = /** @class */ (function () {
-    function ListUserService() {
+var bcrypt_1 = require("bcrypt");
+var jsonwebtoken_1 = require("jsonwebtoken");
+var AppError_1 = __importDefault(require("../../errors/AppError"));
+var messages_1 = require("../../utils/messages");
+var token_1 = __importDefault(require("../../configs/token"));
+var RefreshToken_1 = require("../../redis/services/RefreshToken");
+var AuthServiceAdmin = /** @class */ (function () {
+    function AuthServiceAdmin() {
     }
-    ListUserService.prototype.execute = function () {
+    AuthServiceAdmin.prototype.execute = function (_a) {
+        var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var repository;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, typeorm_1.getRepository(user_1.default)
-                            .createQueryBuilder("user")
-                            .leftJoinAndSelect("user.rule", "rule_id")
-                            .leftJoinAndSelect("user.period", "period_id")
-                            .getMany()];
+            var refreshToken, repository, user, relation, comparePassword, expiresIn, tokenKey, token;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, RefreshToken_1.refreshToken.addRefreshToken()];
                     case 1:
-                        repository = _a.sent();
-                        return [2 /*return*/, repository];
+                        _b.sent();
+                        refreshToken = RefreshToken_1.refreshToken.getRefreshToken();
+                        repository = typeorm_1.getRepository(user_1.default);
+                        return [4 /*yield*/, repository.findOne({ email: email })];
+                    case 2:
+                        user = _b.sent();
+                        if (!user) {
+                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 402);
+                        }
+                        return [4 /*yield*/, repository.createQueryBuilder("user")
+                                .leftJoinAndSelect("user.rule", "rule_id")
+                                .where("user.email = :email", { email: email })
+                                .getOne()];
+                    case 3:
+                        relation = _b.sent();
+                        console.log(relation);
+                        if ((relation === null || relation === void 0 ? void 0 : relation.rule.name) != 'admin') {
+                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 402);
+                        }
+                        return [4 /*yield*/, bcrypt_1.compare(password, user.password)];
+                    case 4:
+                        comparePassword = _b.sent();
+                        if (!comparePassword) {
+                            throw new AppError_1.default(messages_1.errors.userOrPasswordIncorrect, 402);
+                        }
+                        expiresIn = token_1.default.expiresIn, tokenKey = token_1.default.tokenKey;
+                        token = jsonwebtoken_1.sign({}, tokenKey, {
+                            subject: user.id,
+                            expiresIn: expiresIn
+                        });
+                        return [2 /*return*/, { token: token, user: user, refreshToken: refreshToken }];
                 }
             });
         });
     };
-    return ListUserService;
+    return AuthServiceAdmin;
 }());
-exports.listUserService = new ListUserService;
+exports.authServiceAdmin = new AuthServiceAdmin;

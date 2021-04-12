@@ -51,18 +51,28 @@ var UpdateUserService = /** @class */ (function () {
     UpdateUserService.prototype.execute = function (_a) {
         var name = _a.name, lastName = _a.lastName, email = _a.email, password = _a.password, periodId = _a.periodId, id = _a.id;
         return __awaiter(this, void 0, void 0, function () {
-            var repository, findUser, isModifYourelf, user;
+            var repository, relation, findUser, isModifYourelf, user;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         repository = typeorm_1.getRepository(user_1.default);
                         // comparar o id do token com o id da url , usuário não pode alterar outro id que não seja o seu
                         console.log(name, lastName, email, password, periodId);
-                        if (!name || !lastName || !email || !password || !periodId) {
-                            throw new AppError_1.default('errors.allFieldsRequired');
+                        return [4 /*yield*/, repository.createQueryBuilder("user")
+                                .leftJoinAndSelect("user.rule", "rule_id")
+                                .where("user.email = :email", { email: email })
+                                .getOne()];
+                    case 1:
+                        relation = _b.sent();
+                        if (!name || !lastName || !email || !password) {
+                            throw new AppError_1.default(messages_1.errors.allFieldsRequired);
+                        }
+                        if ((relation === null || relation === void 0 ? void 0 : relation.rule.name) == 'user') {
+                            if (!periodId)
+                                throw new AppError_1.default(messages_1.errors.allFieldsRequired);
                         }
                         return [4 /*yield*/, repository.find({ email: email })];
-                    case 1:
+                    case 2:
                         findUser = _b.sent();
                         isModifYourelf = findUser.every(function (user) { return user.id == id; });
                         if (!isModifYourelf) {
@@ -75,7 +85,7 @@ var UpdateUserService = /** @class */ (function () {
                                 password: hashPassword_1.default(password),
                                 periodId: periodId,
                             })];
-                    case 2:
+                    case 3:
                         user = _b.sent();
                         return [2 /*return*/, user];
                 }

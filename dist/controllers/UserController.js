@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var AuthService_1 = require("../services/user/AuthService");
+var AuthServiceAdmin_1 = require("../services/user/AuthServiceAdmin");
 var CreateUserServices_1 = require("../services/user/CreateUserServices");
 var DeleteUserService_1 = require("../services/user/DeleteUserService");
 var ListOneUserService_1 = require("../services/user/ListOneUserService");
@@ -130,6 +131,21 @@ var UserController = /** @class */ (function () {
                     case 0:
                         _a = request.body, email = _a.email, password = _a.password;
                         return [4 /*yield*/, AuthService_1.authService.execute({ email: email, password: password })];
+                    case 1:
+                        _b = _c.sent(), user = _b.user, token = _b.token, refreshToken = _b.refreshToken;
+                        return [2 /*return*/, response.json({ user: user, token: token, refreshToken: refreshToken })];
+                }
+            });
+        });
+    };
+    UserController.authAdmin = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, email, password, _b, user, token, refreshToken;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = request.body, email = _a.email, password = _a.password;
+                        return [4 /*yield*/, AuthServiceAdmin_1.authServiceAdmin.execute({ email: email, password: password })];
                     case 1:
                         _b = _c.sent(), user = _b.user, token = _b.token, refreshToken = _b.refreshToken;
                         return [2 /*return*/, response.json({ user: user, token: token, refreshToken: refreshToken })];

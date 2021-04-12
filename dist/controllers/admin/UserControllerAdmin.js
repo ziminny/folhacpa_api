@@ -36,39 +36,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ListCategoryService_1 = require("../services/category/ListCategoryService");
-var ListOneCategoryService_1 = require("../services/category/ListOneCategoryService");
-var CategoryController = /** @class */ (function () {
-    function CategoryController() {
+var CreateuserServiceAdmin_1 = require("../../services/admin/user/CreateuserServiceAdmin");
+var DeleteManyUsersService_1 = require("../../services/admin/user/DeleteManyUsersService");
+var UserControllerAdmin = /** @class */ (function () {
+    function UserControllerAdmin() {
     }
-    CategoryController.list = function (request, response) {
+    UserControllerAdmin.deleteManyUsers = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var categories;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, ListCategoryService_1.listCategoryService.execute()];
-                    case 1:
-                        categories = _a.sent();
-                        return [2 /*return*/, response.json(categories)];
-                }
-            });
-        });
-    };
-    CategoryController.listOne = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, category;
+            var ids;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = request.params.id;
-                        return [4 /*yield*/, ListOneCategoryService_1.listOneCategoryService.execute(id)];
+                        ids = request.body.ids;
+                        return [4 /*yield*/, DeleteManyUsersService_1.deleteManyUsersService.execute(ids)];
                     case 1:
-                        category = _a.sent();
-                        return [2 /*return*/, response.json(category)];
+                        _a.sent();
+                        return [2 /*return*/, response.json({})];
                 }
             });
         });
     };
-    return CategoryController;
+    UserControllerAdmin.createAdmin = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, name, lastName, email, password, periodId, ruleId, user;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = request.body, name = _a.name, lastName = _a.lastName, email = _a.email, password = _a.password, periodId = _a.periodId, ruleId = _a.ruleId;
+                        return [4 /*yield*/, CreateuserServiceAdmin_1.createuserServiceAdmin.execute({ name: name, lastName: lastName, email: email, password: password, periodId: periodId, ruleId: ruleId })];
+                    case 1:
+                        user = _b.sent();
+                        return [2 /*return*/, response.json(user)];
+                }
+            });
+        });
+    };
+    return UserControllerAdmin;
 }());
-exports.default = CategoryController;
+exports.default = UserControllerAdmin;

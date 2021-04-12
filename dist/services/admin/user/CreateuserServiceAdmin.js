@@ -35,40 +35,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var ListCategoryService_1 = require("../services/category/ListCategoryService");
-var ListOneCategoryService_1 = require("../services/category/ListOneCategoryService");
-var CategoryController = /** @class */ (function () {
-    function CategoryController() {
+exports.createuserServiceAdmin = void 0;
+var typeorm_1 = require("typeorm");
+var AppError_1 = __importDefault(require("../../../errors/AppError"));
+var user_1 = __importDefault(require("../../../models/user"));
+var hashPassword_1 = __importDefault(require("../../../utils/hashPassword"));
+var messages_1 = require("../../../utils/messages");
+var CreateuserServiceAdmin = /** @class */ (function () {
+    function CreateuserServiceAdmin() {
     }
-    CategoryController.list = function (request, response) {
+    CreateuserServiceAdmin.prototype.execute = function (_a) {
+        var name = _a.name, lastName = _a.lastName, email = _a.email, password = _a.password, periodId = _a.periodId, ruleId = _a.ruleId;
         return __awaiter(this, void 0, void 0, function () {
-            var categories;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, ListCategoryService_1.listCategoryService.execute()];
-                    case 1:
-                        categories = _a.sent();
-                        return [2 /*return*/, response.json(categories)];
-                }
-            });
-        });
-    };
-    CategoryController.listOne = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, category;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var repository, user;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        id = request.params.id;
-                        return [4 /*yield*/, ListOneCategoryService_1.listOneCategoryService.execute(id)];
+                        if (!name || !lastName || !email || !password || !ruleId) {
+                            throw new AppError_1.default(messages_1.errors.allFieldsRequired);
+                        }
+                        //rules
+                        // user "6b22728c-385a-46dc-969b-919bdc9c5c55"
+                        // admin f6972d5f-8edd-4f65-8a09-131c2adc9798
+                        // periods 
+                        //"8ad9cce8-7f04-49e9-a492-2dea34ec2386" manha 
+                        // "db353d4e-33a6-4ce0-bdcb-221b9208affb" noite
+                        // "48a1c24e-e7b5-4b72-a81f-c24e206daf13" tarde
+                        if (ruleId === "6b22728c-385a-46dc-969b-919bdc9c5c55") {
+                            if (!periodId) {
+                                throw new AppError_1.default(messages_1.errors.allFieldsRequired);
+                            }
+                        }
+                        repository = typeorm_1.getRepository(user_1.default);
+                        user = repository.create({
+                            name: name, lastName: lastName, email: email,
+                            password: hashPassword_1.default(password),
+                            periodId: periodId, ruleId: ruleId
+                        });
+                        return [4 /*yield*/, repository.save(user)];
                     case 1:
-                        category = _a.sent();
-                        return [2 /*return*/, response.json(category)];
+                        _b.sent();
+                        return [2 /*return*/, user];
                 }
             });
         });
     };
-    return CategoryController;
+    return CreateuserServiceAdmin;
 }());
-exports.default = CategoryController;
+exports.createuserServiceAdmin = new CreateuserServiceAdmin;
