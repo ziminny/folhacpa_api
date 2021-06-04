@@ -84,8 +84,11 @@ var User1615598943188 = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.createTable(table)];
+                    case 0: return [4 /*yield*/, queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')];
                     case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.createTable(table)];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
@@ -96,8 +99,11 @@ var User1615598943188 = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.dropTable(table)];
+                    case 0: return [4 /*yield*/, queryRunner.query('DROP EXTENSION IF EXISTS "uuid-ossp";')];
                     case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.dropTable(table)];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }

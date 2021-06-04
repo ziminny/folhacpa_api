@@ -57,7 +57,6 @@ var ListCategoryService = /** @class */ (function () {
                         return [4 /*yield*/, ListCaregoriesRedis_1.listCaregoriesRedis.getCategories()];
                     case 1:
                         categoriesRedis = _a.sent();
-                        console.time("AKI");
                         if (!!categoriesRedis) return [3 /*break*/, 4];
                         return [4 /*yield*/, repository
                                 .createQueryBuilder("cat")
@@ -67,14 +66,12 @@ var ListCategoryService = /** @class */ (function () {
                                 .getMany()];
                     case 2:
                         categories = _a.sent();
-                        console.timeEnd("AKI");
                         return [4 /*yield*/, ListCaregoriesRedis_1.listCaregoriesRedis.addCategories(categories)];
                     case 3:
                         _a.sent();
                         return [2 /*return*/, categories];
                     case 4:
                         parseCategories = JSON.parse(categoriesRedis);
-                        console.timeEnd("AKI");
                         return [2 /*return*/, parseCategories];
                 }
             });
