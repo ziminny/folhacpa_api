@@ -12,7 +12,7 @@ class ListCategoryService
     
 
     const categoriesRedis = await listCaregoriesRedis.getCategories();
-    console.time("AKI")
+    
       if(!categoriesRedis) {
        
          const categories =  await repository
@@ -21,14 +21,16 @@ class ListCategoryService
          .leftJoinAndMapMany("cat.question" , Question,"question","question.category_id = cat.id")
          .leftJoinAndSelect('question.typeQuestion','type_question_id') 
         .getMany()
-
-        console.timeEnd("AKI")
+        
+        
+     
         await listCaregoriesRedis.addCategories(categories)
+       
         return categories;
       }
      
       const parseCategories = JSON.parse(categoriesRedis);
-      console.timeEnd("AKI")
+     
       return parseCategories;
 
     

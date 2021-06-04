@@ -22,6 +22,9 @@ class AuthService
 
   public async execute({email,password}:Request) :Promise<TokenAndUser>
   {
+ 
+      
+      
       await RefreshToken.addRefreshToken()
 
       const refreshToken = RefreshToken.getRefreshToken();
@@ -31,6 +34,7 @@ class AuthService
       const user = await repository.findOne({email});
 
       if(!user) {
+        
         throw new AppError(errors.userOrPasswordIncorrect,402);   
       }
 

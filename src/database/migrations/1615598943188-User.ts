@@ -45,11 +45,13 @@ const table = new Table({
 export class User1615598943188 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
         await queryRunner.createTable(table);
     
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query('DROP EXTENSION IF EXISTS "uuid-ossp";')
         await queryRunner.dropTable(table);
     }
 

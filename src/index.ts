@@ -24,22 +24,23 @@ app.use(express.json())
 app.use("/files",express.static(uploadConfig.directory))
 app.use(routers);
 
-app.use( (error:Error , request:Request,response:Response , next:NextFunction) => {
+app.use( (error:Error , request:Request,response:Response , next:NextFunction) => {  
   if(error instanceof AppError) {
+    console.log(error);
     return response.status(error.code).json({message:error.message})
   }
   console.log(error);
-    console.log(error);
+
     
     return response.status(500).json({message:"Erro interno no servidor!"})
 })
 
-app.get("/testes",async (req,res) => {
+// app.get("/testes",async (req,res) => {
  
-  await sendQueueMessageAddNewCategory.add({categoryName:'PROFESSORES'})
-  return res.json({ok:true})
-})
+//   await sendQueueMessageAddNewCategory.add({categoryName:'PROFESSORES'})
+//   return res.json({ok:true})
+// })
 
-const port = 3334;
+const port = 3000;
 
 app.listen(port , () => console.log(`Server is running port ${port}`));
