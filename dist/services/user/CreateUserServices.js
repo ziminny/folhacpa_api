@@ -71,7 +71,7 @@ var CreateUserServices = /** @class */ (function () {
                             lastName: lastName,
                             email: email,
                             periodId: periodId,
-                            ruleId: "252106b4-04ec-4a25-a810-f41bd3eb9f27",
+                            ruleId: "d45c826d-58a8-4edb-b090-0a68a5975057",
                             password: hashPassword_1.default(password)
                         });
                         return [4 /*yield*/, repository.save(user)];
