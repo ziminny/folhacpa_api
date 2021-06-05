@@ -25,15 +25,15 @@ class CreateuserServiceAdmin
       throw new AppError(errors.allFieldsRequired); 
     }
     //rules
-    // user "6b22728c-385a-46dc-969b-919bdc9c5c55"
-    // admin f6972d5f-8edd-4f65-8a09-131c2adc9798
+    // user "d45c826d-58a8-4edb-b090-0a68a5975057"
+    // admin f75ddf68-c44f-414d-9cb2-548716ddcb65
 
     // periods 
     //"8ad9cce8-7f04-49e9-a492-2dea34ec2386" manha 
     // "db353d4e-33a6-4ce0-bdcb-221b9208affb" noite
     // "48a1c24e-e7b5-4b72-a81f-c24e206daf13" tarde
 
-    if(ruleId === "6b22728c-385a-46dc-969b-919bdc9c5c55") {
+    if(ruleId === "d45c826d-58a8-4edb-b090-0a68a5975057") {
       if(!periodId) {
         throw new AppError(errors.allFieldsRequired);
       } 
